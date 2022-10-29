@@ -1,5 +1,6 @@
 # ACoP13_NLME_Workshop
-Pumas NLME workshop material for ACoP 13 
+
+Pumas NLME workshop material for ACoP 13
 
 ## Workshop Title
 
@@ -17,6 +18,7 @@ Pumas for non-linear mixed effects modeling
 ### Workshop Outline
 
 October 29, 2022
+
 - 08:30 - 08:50 - Everyone - Setting up the workspace
 - 08:50 - 09:15 - Jose - JuliaHub - Instances and File Explorer
 - 09:15 - 10:00 - Brooke - NCA
@@ -29,10 +31,11 @@ October 29, 2022
 - 14:45 - 15:30 - Jose - Model-based Optimal Design
 
 October 30, 2022
-- 08:30 - 10:00 - Andreas - Model Diagnostics Part 1 - Plotting
+
+- 08:30 - 10:00 - Patrick - Model Diagnostics Part 1 - Model qualification
 - 10:00 - 10:15 - Coffee break
-- 10:15 - 11:15 - Patrick - Model Diagnostics Part 2 - Model qualification
-- 11:15 - 12:30 - Vijay - Sequential PKPD 
+- 10:15 - 11:15 - Andreas - Model Diagnostics Part 2 - Plotting
+- 11:15 - 12:30 - Vijay - Sequential PKPD
 - 12:30 - 13:30 - Lunch break
 - 13:30 - 14:30 - Jose - Data Wrangling
 - 14:30 - 14:45 - Coffee break
