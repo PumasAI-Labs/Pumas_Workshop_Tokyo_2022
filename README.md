@@ -28,7 +28,7 @@ October 29, 2022
 - 12:30 - 13:30 - Lunch break
 - 13:30 - 14:30 - Brooke - Population Pharmacokinetic modeling Part 2 - Iterative Model Building
 - 14:30 - 14:45 - Coffee break
-- 14:45 - 15:30 - Jose - Model-based Optimal Design
+- 14:45 - 15:30 - Jose - Population Pharmacokinetic modeling Part 3 - Absorption Models
 
 October 30, 2022
 
