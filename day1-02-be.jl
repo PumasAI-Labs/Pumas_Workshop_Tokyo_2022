@@ -16,7 +16,7 @@ output_auc =
 
 # Fed vs. NonFed Example
 unique(pkdata.sequence)
-@rtransform! pkdata :sequence = sequence == "RT" ? "NF" : "FN"
+@rtransform! pkdata :sequence = :sequence == "RT" ? "NF" : "FN"
 
 # BE with Cmax specifying reference as Non-Fed
 cmax_output_nonfed = pumas_be(
