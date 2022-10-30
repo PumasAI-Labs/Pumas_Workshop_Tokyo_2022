@@ -1,12 +1,9 @@
 using Pumas
 using PharmaDatasets
-using DataFramesMeta
+using Pumas, DataFramesMeta
 
 # dataset
 tte_single = dataset("tte_single")
-
-# including AMT column
-@rtransform! tte_single :AMT = 0
 
 # Pumas Modeling
 pop_single = read_pumas(
@@ -15,7 +12,6 @@ pop_single = read_pumas(
     covariates = [:DOSE],
     id = :ID,
     time = :TIME,
-    amt = :AMT,
     event_data = false,
 )
 
@@ -66,8 +62,14 @@ tte_single_weibull_fit = fit(
 # Simulations
 # First get CIs
 tte_single_weibull_infer = infer(tte_single_weibull_fit)
-# Second simulate with uncertainty
-sims = simobs(tte_single_weibull_infer; samples = 10)
-# Now get everything in a nice DataFrame
-sims_df = vcat(DataFrame.(sims)...; source = "rep")
-names(sims_df)
+
+# Simulation a TTE datasets is really simple
+sims = simobstte(
+    tte_single_weibull_model,
+    pop_single,
+    coef(tte_single_weibull_infer);
+    maxT=500.0, # the censoring time
+)
+
+# Convert simulated population to a DataFrame for easier display
+sims_df = DataFrame(sims)
