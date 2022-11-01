@@ -37,7 +37,7 @@ model = @model begin
         # here is where we calculate concentration and add residual variability
         # tilde (~) means "distributed as"
         cp = @. 1000 * Central / Vc # ipred = A1/V
-        dv ~ @. Normal(cp, σ)
+        dv ~ @. Normal(cp, cp * σ)
         # dv ~ @. Normal(cp, sqrt(cp^2 * σ_prop^2 + σ_add^2))
     end
 end
@@ -48,7 +48,7 @@ params2 = (tvcl = 1.0, tvvc = 8.0, Ω = Diagonal([0.5, 0.5]), σ = 4.16)
 
 # Fit a base model
 fit_results = fit(model, population, params, Pumas.FOCE())
-fit_results2 = fit(model, population, params, Pumas.NaivePooled(); omegas = (:Ω,))
+fit_results2 = fit(model, population, params, Pumas.FOCE(); constantcoef = (Ω = Diagonal(zeros(2)),)) # Turn off random effects
 fit_results3 = fit(model, population, params2, Pumas.LaplaceI())
 fit_results4 = fit(model, population, params2, Pumas.FOCE(); constantcoef = (tvcl = 1.0,))
 
@@ -58,16 +58,6 @@ fit_compare = compare_estimates(;
     NaivePooled = fit_results2,
     FOCE_constantcoef = fit_results4,
 )
-
-# VPCs
-fit_vpc = vpc(fit_results) # Single-Threaded
-fit_vpc = vpc(
-    fit_results; # Multi-Threaded
-    ensemblealg = EnsembleThreads(),
-    prediction_correction = true, # pc-vpc
-)
-
-vpc_plot(fit_vpc)
 
 # Generate a report for all of our fitted models
 report((;
