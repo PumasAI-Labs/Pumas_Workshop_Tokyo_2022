@@ -63,7 +63,7 @@ params =
 
 # Fit models
 fit_results = fit(model, pop, params, Pumas.FOCE())
-fit_results_naive = fit(model, pop, params, Pumas.NaivePooled(); omegas = (:Ω,))
+fit_results_naive = fit(model, pop, params, Pumas.FOCE(); constantcoef = (Ω = Diagonal(zeros(2)),)) # Turn off random effects
 fit_results_fixed = fit(model, pop, params, Pumas.FOCE(); constantcoef = (tvcl = 0.3,))
 
 # Confidence Intervals using asymptotic variance-covariance
