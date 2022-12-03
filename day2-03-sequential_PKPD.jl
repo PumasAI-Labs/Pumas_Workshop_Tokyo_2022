@@ -68,7 +68,7 @@ twocomp_params = (
 #
 
 # 5. Fit the data
-pkfit = fit(inf_2cmt, pkpdpop, twocomp_params, Pumas.FOCE())
+pkfit = fit(inf_2cmt, pkpdpop, twocomp_params, FOCE())
 
 # 6. explore the results
 pkinspect = inspect(pkfit)
@@ -154,7 +154,7 @@ turnover_params =
     (tvturn = 10, tvebase = 10, tvec50 = 0.3, Ω_pd = Diagonal([0.05]), σ_add_pd = 0.2)
 
 # 11. Fit the PD data via sequential pkpd
-pkpdfit = fit(inf_2cmt_lin_turnover, pdpop, turnover_params, Pumas.FOCE())
+pkpdfit = fit(inf_2cmt_lin_turnover, pdpop, turnover_params, FOCE())
 
 # 12. explore the results
 pdinspect = inspect(pkpdfit)

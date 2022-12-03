@@ -3,8 +3,6 @@ using CSV
 using DataFramesMeta
 using Dates
 using NCA
-using NCAUtilities
-using NCA.Unitful
 using PumasUtilities
 using CairoMakie
 using PharmaDatasets  #this package is used for the example dataset
@@ -49,7 +47,10 @@ obsvstimes = observations_vs_time(pop_bolus_sd[7]; axis = (yscale = log,))
 ## Visualize the mean concentration-time curve of population 
 summary_observations_vs_time(
     pop_bolus_sd;
+    color = :black,
+    whiskerwidth = 6,
     axis = (xlabel = "Time (hour)", ylabel = "Drug Concentration (mg/L)"),
+    facet = (combinelabels = true,)
 )
 
 ## Run an annotated NCA to be used for a report
@@ -150,7 +151,6 @@ pop_inf_md = read_nca(
     amt = :AMT,
     route = :ROUTE,
     ii = :ii,             # this will allow us to get our Tau results   
-    addl = :addl,           # how many doses were given in beween dosing rows
     ss = :ss,             # a flag to label when we are at ss
     duration = :DURATION,       # Because we are using an infusion
     timeu = true,
@@ -162,6 +162,7 @@ pop_inf_md = read_nca(
 
 nca_inf_md_report = run_nca(
     pop_inf_md;
+    parameters = [:tmax, :cmax, :auclast, :vz_obs, :cl_obs, :cmaxss, :cavgss],
     sigdigits = 3,
     studyid = "STUDY-002",
     studytitle = "Drug Trial: Infusion Multiple Dose", # required
@@ -176,6 +177,6 @@ nca_inf_md_report = run_nca(
 param_summary_inf_md = summarize(
     nca_inf_md_report.reportdf,
     stratify_by = [:GROUP, :OCC],
-    parameters = [:half_life, :tmax, :cmax, :auclast, :vz_obs, :cl_obs, :auc_tau_obs],
+    parameters = [:half_life, :tmax, :cmax, :auclast, :vz_obs, :cmaxss, :cavgss],
 )
 report(nca_inf_md_report, param_summary_inf_md)

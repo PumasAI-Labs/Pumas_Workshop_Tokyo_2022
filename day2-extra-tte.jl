@@ -56,7 +56,7 @@ tte_single_weibull_fit = fit(
     tte_single_weibull_model,
     pop_single,
     init_params(tte_single_weibull_model),
-    Pumas.LaplaceI(),
+    LaplaceI(),
 )
 
 # Simulations

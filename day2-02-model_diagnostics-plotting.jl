@@ -62,9 +62,9 @@ params =
     (tvvc = 5, tvcl = 0.02, tvq = 0.01, tvvp = 10, Ω = Diagonal([0.01, 0.01]), σ = 0.01)
 
 # Fit models
-fit_results = fit(model, pop, params, Pumas.FOCE())
-fit_results_naive = fit(model, pop, params, Pumas.FOCE(); constantcoef = (Ω = Diagonal(zeros(2)),)) # Turn off random effects
-fit_results_fixed = fit(model, pop, params, Pumas.FOCE(); constantcoef = (tvcl = 0.3,))
+fit_results = fit(model, pop, params, FOCE())
+fit_results_naive = fit(model, pop, params, FOCE(); constantcoef = (Ω = Diagonal(zeros(2)),)) # Turn off random effects
+fit_results_fixed = fit(model, pop, params, FOCE(); constantcoef = (tvcl = 0.3,))
 
 # Confidence Intervals
 fit_infer = infer(fit_results)
