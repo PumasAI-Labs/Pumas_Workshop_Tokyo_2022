@@ -102,6 +102,7 @@ pkfit_1cmt_comb = fit(pk_1cmt, pop, params_1cmt_comb, FOCE())
 ## show model metrics 
 metrics_pkfit_1cmt_comb = metrics_table(pkfit_1cmt_comb)
 rename!(metrics_pkfit_1cmt_comb, :Value => :comb_1cmp)
+
 ## Make on the inference on the estimted parameters
 infer_1cmt_comb = infer(pkfit_1cmt_comb) # computes variance-covariance matrix CI calculated as the (1-level)/2 and (1+level)/2
 coeftable(infer_1cmt_comb) # returns a table with parameter, se, ci lower and ci upper
@@ -111,7 +112,7 @@ inspect_1cmt_comb = inspect(pkfit_1cmt_comb) # get predictions and residuals, eb
 inspect_df_1cmt_comb = DataFrame(inspect_1cmt_comb)  # convert to a DataFrame
 
 ## Post processing plots
-goodness_of_fit(inspect_1cmt_comb) # plot will show you 4 basic goodness of fit plots (more day 2)
+goodness_of_fit(inspect_1cmt_comb) # plot will show you 4 basic goodness of fit plots 
 
 ## Save your fitted model 
 # serialize("pkfit_1cmt_comb.jls", pkfit_1cmt_comb)
@@ -205,7 +206,7 @@ pkfit_2cmt_prop = fit(
 # pkfit_2cmt_comb = deserialize("pk_fit_2cmt_comb.jls")
 
 
-## Show Model diagnstic criteria (more day 2)
+## Show Model diagnstic criteria 
 metrics_pkfit_2cmt_comb = rename((metrics_table(pkfit_2cmt_comb)), :Value => :comb_2cmp) # best model
 metrics_pkfit_2cmt_add = rename((metrics_table(pkfit_2cmt_add)), :Value => :add_2cmp)
 metrics_pkfit_2cmt_prop = rename((metrics_table(pkfit_2cmt_prop)), :Value => :prop_2cmp)
@@ -214,7 +215,7 @@ metrics_pkfit_2cmt_prop = rename((metrics_table(pkfit_2cmt_prop)), :Value => :pr
 ## Compare the estimates with 1-cmt model
 compare_estimates(; pkfit_2cmt_comb, pkfit_1cmt_comb)
 
-## compare model metrics of 1 cmt to 2 cmt (more day 2)
+## compare model metrics of 1 cmt to 2 cmt 
 df_compartment_comp = innerjoin(
     metrics_pkfit_2cmt_comb,
     metrics_pkfit_1cmt_comb,
@@ -230,11 +231,11 @@ pvalue(lrt)
 infer_2cmt_comb = infer(pkfit_2cmt_comb) # computes variance-covariance matrix.. CI  calculated as the (1-level)/2 and (1+level)/2
 coeftable(infer_2cmt_comb) #returns a table with parameter, se, ci lower and ci upper
 
-## evaluate the diagnostics
+## inspect the diagnostics
 inspect_2cmt_comb = inspect(pkfit_2cmt_comb) # get predictions, residuals, EBEs and individual parameters
 inspect_df_2cmt_comb = DataFrame(inspect_2cmt_comb)  # convert to a DataFrame
 
-goodness_of_fit(inspect_2cmt_comb) # plot will show you 4 basic goodness of fit plots (more day 2)
+goodness_of_fit(inspect_2cmt_comb) # plot will show you 4 basic goodness of fit plots 
 
 ## customized plotting
 figure = Figure(; fontsize = 22, resolution = (1400, 800))
@@ -246,19 +247,20 @@ figure
 
 #################### COVARIATE MODEL BUILDING #######################################
 
-## some basic plots (more day 2)
+## some basic plots 
+
+# covariates vs ids
 covariates_check(pop)
+
+#distribution of covariates
 covariates_dist(pop)
 
-empirical_bayes_vs_covariates(inspect_2cmt_comb, categorical = [:SEX, :GROUP])
+#EBE vs categorical covariates
+empirical_bayes_vs_covariates(inspect_2cmt_comb, covariates = [:SEX, :GROUP])
 
+#EBE vs continuous covariates
 empirical_bayes_vs_covariates(inspect_2cmt_comb, covariates = [:WT, :AGE, :CRCL])
 
-empirical_bayes_vs_covariates(
-    inspect_2cmt_comb,
-    covariates = [:SEX, :GROUP],
-    categorical = [:SEX, :GROUP],
-)
 
 ###################### WEIGHT ##########################################
 
@@ -409,7 +411,7 @@ coeftable(infer_base_wt_crcl) #returns a table with parameter, se, ci lower and 
 inspect_base_wt_crcl = inspect(pkfit_base_wt_crcl) # get predictions and residuals 
 inspect_df_base_wt_crclb = DataFrame(inspect_base_wt_crcl)  # convert to a DataFrame
 
-goodness_of_fit(inspect_base_wt_crcl) # plot will show you 4 basic goodness of fit plots (more day 2)
+goodness_of_fit(inspect_base_wt_crcl) # plot will show you 4 basic goodness of fit plots 
 
 ## customized plotting
 figure = Figure(; fontsize = 22, resolution = (1000, 800))

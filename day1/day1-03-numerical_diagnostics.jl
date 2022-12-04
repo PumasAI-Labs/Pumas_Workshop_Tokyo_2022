@@ -1,4 +1,29 @@
-pkfit_base_wt_crcl
+using Pumas
+using PumasUtilities
+using Serialization
+using Latexify
+using Random
+using PharmaDatasets
+using SummaryTables
+
+## load the fitted model if it is not in your workspace
+# pkfit_base_wt_crcl = deserialize("pkfit_base_wt_crcl.jls");
+
+pkdata = dataset("nlme_sample.csv")
+## generate a table of demographics
+demotable = @chain pkdata begin
+    unique(:ID)
+    select(:ID, :GROUP, :SEX, :WT, :AGE, :CRCL)
+    @rtransform :SEX = :SEX == "M" ? "Male" : "Female"
+end
+
+table_one(demotable, [:GROUP, :SEX, :WT, :AGE, :CRCL]; nonnormal=[:GROUP, :SEX])
+
+table_one(demotable, [:SEX, :WT, :AGE, :CRCL]; groupby = [:GROUP], nonnormal=[:SEX])
+
+
+## QC model code for final check
+render(latexify(pkfit_base_wt_crcl.model, :dynamics))
 
 # fit helper functions
 # generates a namedtuple that can be used as initial estimates in a subsequent fit
@@ -19,8 +44,8 @@ nobs(pkfit_base_wt_crcl)
 # Loglikelihood and NONMEM's OFV with constant
 loglikelihood(pkfit_base_wt_crcl) # using a result from fit
 
-# to reproduce NONMEM's "OFV with constant" you need to divide by -2
-loglikelihood(pkfit_base_wt_crcl) / -2
+# to reproduce NONMEM's "OFV with constant" you need to multiply by -2
+loglikelihood(pkfit_base_wt_crcl) * -2
 
 # AIC
 aic(pkfit_base_wt_crcl)
