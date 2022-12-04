@@ -1,3 +1,13 @@
+using Pumas
+using PumasUtilities
+using Serialization
+using Random
+using CairoMakie
+using AlgebraOfGraphics
+
+## load the fitted model if it is not in your workspace
+# pkfit_base_wt_crcl = deserialize("pkfit_base_wt_crcl.jls");
+
 inspect_covmodel = inspect(pkfit_base_wt_crcl)
 
 # Covariate Analysis
@@ -22,10 +32,6 @@ goodness_of_fit(inspect_covmodel)
 observations_vs_predictions(inspect_covmodel)
 observations_vs_ipredictions(inspect_covmodel)
 
-# using custom predict
-fit_predict = predict(pkfit_base_wt_crcl)
-observations_vs_ipredictions(pkfit_base_wt_crcl.model, fit_predict) # using model + custom predictions
-
 # individual plots
 sf = subject_fits(
     inspect_covmodel;
@@ -38,7 +44,9 @@ sf = subject_fits(
 
 sf[1]
 
-## richer plots
+## richer time grid plots
+
+# first perform a predicion that is rich in time
 ind_preds = [
     predict(
         pkfit_base_wt_crcl.model,
@@ -46,14 +54,16 @@ ind_preds = [
         pkfit_base_wt_crcl.param,
         obstimes = minimum(pkfit_base_wt_crcl.data[i].time):1:maximum(
             pkfit_base_wt_crcl.data[i].time,
-        ),
+        ), # this is where we are providing the rich time grid
     ) for i = 1:length(pkfit_base_wt_crcl.data)
-]
+];
+
+# now pass the predicted object into subject_fits
 indplots = subject_fits(
     ind_preds,
-    limit = 9,
-    cols = 3,
-    rows = 3,
+    # limit = 9,
+    # cols = 3,
+    # rows = 3,
     paginate = true,
     separate = true,
     facet = (combinelabels = true,),
@@ -76,7 +86,7 @@ indplots[1]
 wresiduals_vs_time(inspect_covmodel)
 
 # using custom likelihood approx
-fit_wres = wresiduals(pkfit_base_wt_crcl, Pumas.FO())
+fit_wres = wresiduals(pkfit_base_wt_crcl, Pumas.FO());
 wresiduals_vs_time(pkfit_base_wt_crcl.model, fit_wres) # using model + custom wresiduals
 
 # individual residuals vs time
@@ -86,7 +96,6 @@ iwresiduals_vs_time(inspect_covmodel)
 wresiduals_vs_predictions(inspect_covmodel)
 
 # individual residuals vs individual predictions
-# using custom likelihood approx + custom predict
 iwresiduals_vs_ipredictions(inspect_covmodel)
 
 # distribution of residuals
