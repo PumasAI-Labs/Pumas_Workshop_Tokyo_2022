@@ -58,6 +58,22 @@ sim_plot(sims5)
 ## Exporting a simulation
 DataFrame(sims5)
 
+# perform the above simulation without error term but change the dose
+# and simulate without any random effects on subject level
+sims6 = simobs(
+    orig_model,
+    Subject.(original_pop, events = DosageRegimen(750, addl = 7, ii = 24)),
+    (fitted_params..., σ²_add = 0.0, σ²_prop = 0.0),
+    zero_randeffs(orig_model, original_pop, fitted_params),
+    obstimes = 0:1:196,
+    simulate_error = false,
+)
+sim_plot(sims6)
+
+## Exporting a simulation
+DataFrame(sims5)
+
+
 ## Repeating a simulation many times
 
 # single replication
@@ -107,30 +123,9 @@ vpc_plot(vpcsir)
 
 ## generate a new population and simulate into it
 
-# A population is just a collection of subjects. 
-# So let us create a subject First
 
-# empty subject
-s1 = Subj
-# add an ID
-s1 = Subject(id = "Tokyo")
-# add dosage regimen
-s1 = Subject(id = "Tokyo",
-            events = DosageRegimen(750))
-#look at events generated            
-DataFrame(s1.events)
-# add some covariates
-s1 = Subject(id = "Tokyo", 
-            events = DosageRegimen(750),
-            covariates = (WT = 70, CRCL = 90))
-#visualize the subject as a dataframe
-DataFrame(s1)                 
-# add sampling times
-s1 = Subject(id = "Tokyo", 
-            events = DosageRegimen(750), 
-            covariates = (WT = 70, CRCL = 90),
-            time = [0.1, 0.5, 1, 2, 4, 6, 8, 12, 24])
-#visualize the subject as a dataframe
-DataFrame(s1) 
+
+sims7 = simobs(orig_model, s1, fitted_params)
+sim_plot(sims7)
 
 
