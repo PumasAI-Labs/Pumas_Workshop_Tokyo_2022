@@ -24,7 +24,6 @@ results = deserialize(result_filename)
 fits = map(r->r.fits, results)
 
 ##################################################################
-### Calculate RMSE for θ_CL_parent
+### Calculate RMSE for θ_CL_parent and scatterplot against dose 
 ##################################################################
-rmse = map(r -> sqrt(mean(map(r_j -> (coef(r_j).θ_CL_parent - param.θ_CL_parent)^2, r))), fits)
-
+rmse = map(r -> sqrt(mean(map(r_j -> (r_j.θ_CL_parent - first(r).param.θ_CL_parent)^2, coef.(r)))), fits)
